@@ -1,0 +1,76 @@
+@font-face {
+    font-family: 'EB Garamond';
+    src: url('../../external/font/EB_Garamond/EBGaramond-VariableFont_wght.ttf') format('ttf'),
+ }
+
+@font-face {
+    font-family: 'Work Sans';
+    src: url('../../external/font/Work_Sans/WorkSans-VariableFont_wght.ttf') format('ttf'), 
+ }
+
+ @font-face {
+    font-family: 'Whisper';
+    src: url('../../external/font/Whisper/Whisper-Regular.ttf') format('ttf'), 
+ }
+
+.container-background{
+    background-image: url('../../img/side-area-bg.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    padding: 30px;
+}
+
+.container-msg{
+    background-image: url('../../img/h1-img11.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    padding: 30px;
+    height: 100vh;
+    font-family: 'Whisper' !important;
+    color: white;
+}
+
+.whisper-text{
+    font-family: 'Whisper';
+    padding-top: 20%;
+    font-size: 81px;
+
+}
+
+.icon-top{
+    padding: 20px;
+}
+
+.icon-bg{
+    color: #5b175d !important;
+    font-size: 36px;
+}
+
+.info-text{
+    font-family: 'EB Garamond';
+}
+
+.half-text{
+    color: #5b175d !important;
+    margin: 0px auto;
+    width: 50%;
+}
+
+.center-gallery{
+    margin: 0px auto;
+    display: block;
+}
+
+.purple-small-line{
+    border: 1px solid #5b175d;
+    width: 50%;
+    margin: 0px auto;
+    margin-top: 20px;
+}
+
+.para-text{
+    margin: 5px;
+    color: #5b175d !important;
+    margin-bottom: 20px;
+    font-family: 'Work Sans';
+}

@@ -1,0 +1,27 @@
+@font-face {
+    font-family: 'EB Garamond';
+    src: url('../../external/font/EB_Garamond/EBGaramond-VariableFont_wght.ttf') format('ttf'),
+ }
+
+@font-face {
+    font-family: 'Work Sans';
+    src: url('../../external/font/Work_Sans/WorkSans-VariableFont_wght.ttf') format('ttf'), 
+ }
+
+ @font-face {
+    font-family: 'Whisper';
+    src: url('../../external/font/Whisper/Whisper-Regular.ttf') format('ttf'), 
+ }
+
+.header-title{
+    font-family: 'EB Garamond';
+}
+
+.label-content{
+    font-family: 'Work Sans';
+}
+
+.container-no-margin{
+    margin: none !important;
+    padding: none !important;
+}

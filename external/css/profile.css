@@ -1,0 +1,194 @@
+@font-face {
+    font-family: 'EB Garamond';
+    src: url('external/font/EB_Garamond/EBGaramond-VariableFont_wght.ttf') format('ttf'),
+ }
+
+@font-face {
+    font-family: 'Work Sans';
+    src: url('external/font/Work_Sans/WorkSans-VariableFont_wght.ttf') format('ttf'), 
+ }
+
+ @font-face {
+    font-family: 'Whisper';
+    src: url('external/font/Whisper/Whisper-Regular.ttf') format('ttf'), 
+ }
+
+.container-section-navigator{
+    font-family: 'EB Garamond' !important;
+    background-image: url('../../img/ip-img2.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 35vh;
+    padding: 50px;
+    color: white !important;
+}
+
+.nav-side{
+    margin-left: 50px;
+}
+
+.nav-side-link{
+    font-family: 'EB Garamond' !important;
+    text-decoration: none;
+    color: white;
+}
+
+.nav-side-link{
+    font-family: 'EB Garamond' !important;
+    position: relative;
+    text-decoration: none;
+    color: #ffffff; 
+    display: inline-block; 
+}
+
+.nav-side-link::before {
+    content: '';
+    position: absolute;
+    bottom: -2px; 
+    left: 0;
+    width: 0; 
+    height: 2px;
+    background-color: #ffffff; 
+    transition: width 0.3s ease; 
+}
+
+.nav-side-link:hover::before {
+    width: 100%;
+}
+
+.register-info-container{
+    margin: 30px;
+    font-family: 'EB Garamond' !important;
+}
+
+.purple-small-line{
+    border: 1px solid #5b175d;
+    width: 50%;
+    margin: 0px auto;
+    margin-top: 20px;
+}
+
+.main-interface{
+    background-color: #e3bfe3;
+    padding: 60px;
+    font-family: 'EB Garamond' !important;
+    color: #5b175d;
+}
+
+.main-interface-1{
+    background-color: #e3bfe3;
+    font-family: 'EB Garamond' !important;
+    color: #5b175d;
+}
+
+.severabs-form{
+    border: 1px solid #5b175d;
+    padding: 5px;
+    color: #5b175d;
+    width: 100%;
+}
+
+.severabs-form:focus{
+    outline: #5b175d;
+    border: 2px solid #5b175d;
+}
+
+.sidebar{
+        background-image: url('../../img/side-area-bg.png');
+        background-repeat: no-repeat;
+        background-size: cover;
+        padding: 20px;
+        border-left: 1px solid #5b175d;
+        font-family: 'EB Garamond' !important;
+        color: #5b175d;
+}
+
+
+.side-link {
+    margin-left: 20px;
+    font-family: 'Work Sans' !important;
+    font-size: 16px;
+    position: relative;
+    text-decoration: none;
+    color: #5b175d;
+    display: inline-block; 
+}
+
+.side-link::before {
+    content: '';
+    position: absolute;
+    bottom: -2px; 
+    left: 0;
+    width: 0; 
+    height: 2px;
+    background-color: #5b175d; 
+    transition: width 0.3s ease; 
+}
+
+.side-link:hover::before {
+    width: 100%;
+}
+
+.bold{
+    font-weight: bolder;
+    font-family: 'EB Garamond' !important;
+}
+
+.btn-severabs{
+    margin-top: 20px;
+    margin-left: 5px;
+    border: 1px solid white;
+    background-color: #5b175d; 
+    color: white;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.btn-severabs:hover{
+    background-color: white;
+    color: #5b175d;
+}
+
+.profile-btn{
+    width: 90% !important;
+    margin: 0px auto;
+    display: block;
+}
+
+.notifications-container{
+
+    width: 100% !important;
+    border: 1px solid #5b175d;
+}
+
+.notif{
+    color: #823584;
+    text-decoration: none;
+}
+
+.read{
+    color: #5b175d;
+    text-decoration: none;
+}
+
+.orders-links{
+    padding: 5px;
+    background-color: #2c1515 !important;
+    color: white !important;
+    text-align: center;
+    text-decoration: none;
+}
+
+.container-orders{
+    border: 1px solid #2c1515;
+    padding: 5px;
+}
+
+.btn-svrbs{
+    background-color: #2c1515 !important;
+    color: white !important;
+    padding-left: 5px;
+    padding-right: 5px;
+    border: none;
+    outline: none;
+    margin-left: 5px;
+}

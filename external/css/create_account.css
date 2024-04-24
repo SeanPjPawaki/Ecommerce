@@ -1,0 +1,83 @@
+@font-face {
+    font-family: 'EB Garamond';
+    src: url('../../external/font/EB_Garamond/EBGaramond-VariableFont_wght.ttf') format('ttf'),
+ }
+
+@font-face {
+    font-family: 'Work Sans';
+    src: url('../../external/font/Work_Sans/WorkSans-VariableFont_wght.ttf') format('ttf'), 
+ }
+
+ @font-face {
+    font-family: 'Whisper';
+    src: url('../../external/font/Whisper/Whisper-Regular.ttf') format('ttf'), 
+ }
+
+.container-section-navigator{
+    font-family: 'EB Garamond' !important;
+    background-image: url('../../img/ip-img2.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 35vh;
+    padding: 50px;
+    color: white !important;
+}
+
+.nav-side{
+    margin-left: 50px;
+}
+
+.nav-side-link{
+    font-family: 'EB Garamond' !important;
+    text-decoration: none;
+    color: white;
+}
+
+.nav-side-link{
+    font-family: 'EB Garamond' !important;
+    position: relative;
+    text-decoration: none;
+    color: #ffffff; 
+    display: inline-block; 
+}
+
+.nav-side-link::before {
+    content: '';
+    position: absolute;
+    bottom: -2px; 
+    left: 0;
+    width: 0; 
+    height: 2px;
+    background-color: #ffffff; 
+    transition: width 0.3s ease; 
+}
+
+.nav-side-link:hover::before {
+    width: 100%;
+}
+
+.register-info-container{
+    margin: 30px;
+    font-family: 'EB Garamond' !important;
+}
+
+.purple-small-line{
+    border: 1px solid #5b175d;
+    width: 50%;
+    margin: 0px auto;
+    margin-top: 20px;
+}
+
+.req{
+    color:#5b175d;
+}
+
+.input-spacer, label{
+    margin-top: 10px;
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0; 
+}

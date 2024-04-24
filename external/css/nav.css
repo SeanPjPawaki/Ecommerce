@@ -1,0 +1,66 @@
+@font-face {
+    font-family: 'EB Garamond';
+    src: url('../../external/font/EB_Garamond/EBGaramond-VariableFont_wght.ttf') format('ttf'),
+ }
+
+@font-face {
+    font-family: 'Work Sans';
+    src: url('../../external/font/Work_Sans/WorkSans-VariableFont_wght.ttf') format('ttf'), 
+ }
+
+ @font-face {
+    font-family: 'Whisper';
+    src: url('../../external/font/Whisper/Whisper-Regular.ttf') format('ttf'), 
+ }
+
+.navbar{
+    padding-left: 50px;
+    padding-right: 50px;
+    background-image: url('../../img/sticky-bg.jpg');
+    color: white !important;
+    padding: 10px;
+}
+
+.name-link{
+    font-family: 'EB Garamond';
+    font-size: 32px;
+    letter-spacing: 14px;
+}
+
+.nav-link{
+    text-transform: uppercase;
+}
+
+.nav-home, .navbar-brand{
+    color: white !important;
+    
+}
+
+.white-link{
+    color: #ffffff !important;
+}
+
+.work-link {
+    font-family: 'Work Sans' !important;
+    font-size: 16px;
+    position: relative;
+    text-decoration: none;
+    color: #ffffff; 
+    display: inline-block; 
+}
+
+.work-link::before {
+    content: '';
+    position: absolute;
+    bottom: -2px; 
+    left: 0;
+    width: 0; 
+    height: 2px;
+    background-color: #ffffff; 
+    transition: width 0.3s ease; 
+}
+
+.work-link:hover::before {
+    width: 100%;
+}
+

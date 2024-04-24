@@ -1,0 +1,115 @@
+@font-face {
+    font-family: 'EB Garamond';
+    src: url('../../external/font/EB_Garamond/EBGaramond-VariableFont_wght.ttf') format('ttf'),
+ }
+
+@font-face {
+    font-family: 'Work Sans';
+    src: url('../../external/font/Work_Sans/WorkSans-VariableFont_wght.ttf') format('ttf'), 
+ }
+
+ @font-face {
+    font-family: 'Whisper';
+    src: url('../../external/font/Whisper/Whisper-Regular.ttf') format('ttf'), 
+ }
+
+.modal-content{
+    background-image: url('../../img/side-area-bg.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    color: #5b175d !important;
+    font-family: 'EB Garamond' !important;
+}
+
+.btn-form{
+    background-color: #5b175d;
+    color: white;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.btn-form:hover{
+    background-color: white;
+    color: #5b175d;
+}
+
+.link-modal{
+    color: #5b175d !important;
+}
+
+.link-modal {
+    position: relative;
+    text-decoration: none;
+    color: #5b175d !important;
+    display: inline-block; 
+}
+
+.link-modal::before {
+    content: '';
+    position: absolute;
+    bottom: -2px; 
+    left: 0;
+    width: 0; 
+    height: 2px; 
+    background-color: #5b175d; 
+    transition: width 0.3s ease; 
+}
+
+.link-modal:hover::before {
+    width: 100%; 
+}
+
+.offcanvas{
+    background-image: url('../../img/side-area-bg.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    color: #5b175d !important;
+    font-family: 'EB Garamond' !important;
+}
+
+.center-modal{
+    text-align: center;
+}
+
+.x-icon{
+    color: #5b175d;
+    background-color: transparent !important;
+    border: none !important;
+    text-decoration: none;
+    transition: color 0.2s ease
+}
+
+.x-icon:hover{
+   color: rgb(255, 0, 0) !important;
+}
+
+.row-cart{
+    border: 1px solid #5b175d;
+    margin-top: 20px;
+}
+
+.ofc-footer{
+    padding: 10px;
+}
+
+
+.checkout {
+    position: relative;
+    text-decoration: none;
+    color: #5b175d !important;
+    display: inline-block; 
+}
+
+.checkout::before {
+    content: '';
+    position: absolute;
+    bottom: -2px; 
+    left: 0;
+    width: 0; 
+    height: 2px; 
+    background-color: #5b175d; 
+    transition: width 0.3s ease; 
+}
+
+.checkout:hover::before {
+    width: 100%; 
+}

@@ -1,0 +1,27 @@
+footer{
+    background-image: url('../../img/side-area-bg.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    color: #5b175d !important;
+    font-family: 'EB Garamond' !important;
+    padding: 10px;
+    padding-top: 50px;
+    padding-bottom: 50px;
+}
+
+.footer-row{
+    margin-top: 60px;
+    margin-bottom: 60px;
+}
+
+.footer-header{
+    font-weight: bold;
+    letter-spacing: 14px;
+}
+
+.footer-paragraph{
+    font-style: italic;
+    width: 30%;
+    display: block;
+    margin: 0px auto;
+}
