@@ -274,20 +274,18 @@ if(isset($_GET['id'])) {
 
                                                                         if ($product) {
                                                                             echo '<div style="display: flex;">';
-                                                                                echo '<div class="col-lg-8">';
-                                                                                    echo 'Quantity: ' . $row['quantity'] . '<br>';
-                                                                                    echo 'Product Type: ' . $product['type'] . '<br>';
-                                                                                    echo 'Product Name: ' . $product['title'] . '<br>';
-                                                                                    echo 'Original Price: ' . ($product['price']) . '<br>';
-                                                                                    echo 'Sub Price: ' . ($product['price'] * $row['quantity']) . '<br>';
-                                                                                    echo '<br>';
-                                                                                echo '</div>';
-                                                                                echo '<div>';
-                                                                                    echo '<div><img src="../img/products/' . $product['image'] . '" class="img-fluid one-size"></div>';
-                                                                                    echo '<br>';
-                                                                                echo '</div>';
-                                                                            echo '</div>';
-                                                                        } else {
+                                            echo '<div class="col-lg-8">';
+                                                echo 'Quantity: ' . $row['quantity'] . '<br>';
+                                                echo 'Product Type: ' . $product['type'] . '<br>';
+                                                echo 'Product Name: ' . $product['title'] . '<br>';
+            echo 'Original Price: ' . ($product['price']) . '<br>';                                                                                    echo '<br>';
+                                            echo '</div>';
+                                            echo '<div>';
+                                                echo '<div><img src="../img/products/' . $product['image'] . '" class="img-fluid one-size"></div>';
+                                                echo '<br>';
+                                            echo '</div>';
+                                        echo '</div>';
+                                    } else {
                                                                             // Handle case where product is not found
                                                                             echo 'Product not found.';
                                                                         }

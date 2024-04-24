@@ -136,7 +136,7 @@ try {
                 $product = $stmt->fetch(PDO::FETCH_ASSOC);
 
                 echo '<div class="row container-orders">';
-                echo '<div class="col-sm-1">';
+                echo '<div class="col-sm-2">';
                 echo '<img src="img/products/' . $product['image'] . '" class="img-fluid one-size">';
                 echo '</div>';
                 echo '<div class="col">';
@@ -160,9 +160,9 @@ try {
             }
             echo '<div class="d-flex align-items-center">';
             echo '<div class="ms-auto" aria-hidden="true">';
-            echo '<h5>Subtotal: ₱' . number_format($subtotal, 2) . '</h5>';
-            echo '<h5>Delivery Fee: ₱' . number_format($deliveryFee, 2) . '</h5>';
-            echo '<h5>Total: ₱' . number_format($total, 2) . '</h5>';
+            echo '<h4>Subtotal: ₱' . number_format($subtotal, 2) . '</h4>';
+            echo '<h4>Delivery Fee: ₱' . number_format($deliveryFee, 2) . '</h4>';
+            echo '<h4>Total: ₱' . number_format($total, 2) . '</h4>';
             echo '</div>';
             echo '</div>';
             echo '<hr>';
@@ -313,7 +313,7 @@ try {
                 $product = $stmt->fetch(PDO::FETCH_ASSOC);
 
                 echo '<div class="row container-orders">';
-                echo '<div class="col-sm-1">';
+                echo '<div class="col-sm-2">';
                 echo '<img src="img/products/' . $product['image'] . '" class="img-fluid one-size">';
                 echo '</div>';
                 echo '<div class="col">';
@@ -444,7 +444,7 @@ if (empty($orders)) {
             $product = $stmt->fetch(PDO::FETCH_ASSOC);
 
             echo '<div class="row container-orders">';
-            echo '<div class="col-sm-1">';
+            echo '<div class="col-sm-2">';
             echo '<img src="img/products/' . $product['image'] . '" class="img-fluid one-size">';
             echo '</div>';
             echo '<div class="col">';
@@ -574,7 +574,7 @@ if (empty($orders)) {
             $product = $stmt->fetch(PDO::FETCH_ASSOC);
 
             echo '<div class="row container-orders">';
-            echo '<div class="col-sm-1">';
+            echo '<div class="col-sm-2">';
             echo '<img src="img/products/' . $product['image'] . '" class="img-fluid one-size">';
             echo '</div>';
             echo '<div class="col">';
@@ -704,7 +704,7 @@ if (empty($orders)) {
             $product = $stmt->fetch(PDO::FETCH_ASSOC);
 
             echo '<div class="row container-orders">';
-            echo '<div class="col-sm-1">';
+            echo '<div class="col-sm-2">';
             echo '<img src="img/products/' . $product['image'] . '" class="img-fluid one-size">';
             echo '</div>';
             echo '<div class="col">';

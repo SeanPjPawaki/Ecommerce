@@ -44,7 +44,7 @@ include('includes/conn.php') ?>
 
     <!-- Search Form -->
     <div class="container-fluid">
-        <form action="" method="GET" class="mb-3 mt-5 px-4">
+        <form action="" method="GET" class="mb-3 mt-5" style="padding: 0 2rem;">
             <div class="input-group">
                 <input type="text" class="form-control py-3" placeholder="Search for products..." name="search">
                 <button class="btn btn-outline-secondary" type="submit">Search</button>

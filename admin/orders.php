@@ -342,8 +342,8 @@ if(isset($_GET['id'])) {
                                 }
                             }
 
-                            echo '<div style="font-weight: bold; color: #777; border-top: 1px solid #999; padding-top: 5px">Sub Total: ' . $subTotal . '</div>';
-                            echo '<div style="font-weight: bold; color: #777; border-bottom: 1px solid #999; padding-bottom: 5px ">Delivery Fee: ' . $order['total'] . '</div>';
+                            echo '<div style="font-weight: bold; color: #777; border-top: 1px solid #999; padding-top: 5px">Sub Total: ' . $order['total'] - $order['delivery_fee'] . '</div>';
+                            echo '<div style="font-weight: bold; color: #777; border-bottom: 1px solid #999; padding-bottom: 5px ">Delivery Fee: ' . $order['delivery_fee'] . '</div>';
                             echo '<div style="font-weight: bold; color: #444; padding-top: 10px; font-size: 1.5rem">Total: ' . $order['total'] . '</div>';
                             echo '<br>';
 
