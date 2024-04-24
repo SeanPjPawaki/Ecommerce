@@ -152,7 +152,7 @@ include('includes/conn.php')
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
 
 
-                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                                <a class="dropdown-item" href="/Ecommerce" data-toggle="modal" data-target="#logoutModal">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Logout
                                 </a>
@@ -184,113 +184,128 @@ include('includes/conn.php')
                             $products_row = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             ?>   
                             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                    <thead>
-                                        <tr>
-                                            <th>ID</th>
-                                            <th>Type</th>
-                                            <th>Title</th>
-                                            <th>Description</th>
-                                            <th>Stocks</th>
-                                            <th>Availabilty</th>
-                                            <th>Price</th>
-                                            <th>Image</th>
-                                            <th>Manage</th>
-                                        </tr>
-                                    <tbody>
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Type</th>
+                                        <th>Title</th>
+                                        <th>Description</th>
+                                        <th>Stocks</th>
+                                        <th>Availabilty</th>
+                                        <th>Price</th>
+                                        <th>Image</th>
+                                        <th>Manage</th>
+                                    </tr>
+                                <tbody>
                                     <?php foreach ($products_row as $row) : ?>
-                                            <tr>
-                                                <td><?php echo $row['id']; ?></td>
-                                                <td><?php echo $row['type']; ?></td>
-                                                <td><?php echo $row['title']; ?></td>
-                                                <td><?php echo $row['description']; ?></td>
-                                                <td><?php echo $row['stocks']; ?></td>
-                                                <td>
-                                                    <?php
-                                                    $availability = $row['availability'];
-                                                    if ($availability == 'Available') {
-                                                        echo '<span class="badge bg-success" style="color:white">' . $availability . '</span>';
-                                                    } elseif ($availability == 'Not Available') {
-                                                        echo '<span class="badge bg-danger" style="color:white">' . $availability . '</span>';
-                                                    } 
-                                                    ?>
-                                                </td>
-                                                <td>₱<?php echo $row['price']; ?></td>
-                                           
+                                    <tr>
+                                        <td><?php echo $row['id']; ?></td>
+                                        <td><?php echo $row['type']; ?></td>
+                                        <td><?php echo $row['title']; ?></td>
+                                        <td><?php echo $row['description']; ?></td>
+                                        <td><?php echo $row['stocks']; ?></td>
+                                        <td>
+                                            <?php
+                                            $availability = $row['availability'];
+                                            if ($availability == 'Available') {
+                                                echo '<span class="badge bg-success" style="color:white">' . $availability . '</span>';
+                                            } elseif ($availability == 'Not Available') {
+                                                echo '<span class="badge bg-danger" style="color:white">' . $availability . '</span>';
+                                            } 
+                                            ?>
+                                </td>
+                                        <td>₱<?php echo $row['price']; ?></td>
+                                    
+                                    
+                                        <td><a href="#" class="btn-edit" data-bs-toggle="modal" data-bs-target="#viewModal_<?php echo $row['id']?>" data-id="">View Image
+                                            </a></td>
+                                        <td> <a href="#" class="btn-edit" data-bs-toggle="modal" data-bs-target="#infoModal_<?php echo $row['id']?>" data-id="">Edit</a>
+
+                                            <a href="#" class="btn-edit" onclick="confirmDelete(<?php echo $row['id']; ?>)">Delete</a>
+
+                                        </td>
+
+                                        <script>
+                                            function confirmDelete(productId) {
+                                                var confirmDelete = confirm("Are you sure you want to delete this product?");
+                                                if (confirmDelete) {
+                                                    // If user confirms deletion, redirect to delete_products.php with product ID as parameter
+                                                    window.location.href = "processes/delete_products.php?id=" + productId;
+                                                } else {
+                                                    // If user cancels deletion, do nothing
+                                                    return false;
+                                                }
+                                            }
+                                            </script>
+
+                                    </tr>
+
+                                    <div class="modal fade" id="viewModal_<?php echo $row['id']; ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-lg">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel">View Image</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
                                             
-                                                <td><a href="#" class="btn-edit" data-bs-toggle="modal" data-bs-target="#viewModal_<?php echo $row['id']?>" data-id="">View Image
-                                                    </a></td>
-                                                <td> <a href="#" class="btn-edit" data-bs-toggle="modal" data-bs-target="#infoModal_<?php echo $row['id']?>" data-id="">Edit</a>
-
-                                                    <a href="#" class="btn-edit">Delete</a>
-                                                </td>
-                                            </tr>
-
-                                            <div class="modal fade" id="viewModal_<?php echo $row['id']; ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                <div class="modal-dialog modal-lg">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h5 class="modal-title" id="exampleModalLabel">View Image</h5>
-                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                   
-                                                           <img class="img-fluid" src="../img/products/<?php echo $row['image']?>">
-                                                        </div>
-                                                    </div>
+                                                    <img class="img-fluid" src="../img/products/<?php echo $row['image']?>">
                                                 </div>
                                             </div>
+                                        </div>
+                                    </div>
 
                                           
 
-                                            <div class="modal fade" id="infoModal_<?php echo $row['id']?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                <div class="modal-dialog modal-lg">
-                                                    <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h5 class="modal-title" id="exampleModalLabel">Editing Product </h5>
+                                    <div class="modal fade" id="infoModal_<?php echo $row['id']?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-lg">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="exampleModalLabel">Editing Product </h5>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <form action="processes/edit_products.php?id=<?php echo $row['id']; ?>" method="POST" enctype="multipart/form-data">
+                                                        <div class="mb-3">
+                                                            <label for="type" class="form-label">Type</label>
+                                                            <select id="type" name="type" class="form-control">
+                                                                <option value="Tarot Card">Tarot Card</option>
+                                                                <option value="Crystal">Crystal</option>
+                                                            </select>
                                                         </div>
-                                                        <div class="modal-body">
-                                                            <form action="processes/add_products.php" method="POST" enctype="multipart/form-data">
-                                                                <div class="mb-3">
-                                                                    <label for="type" class="form-label">Type</label>
-                                                                    <select id="type" name="type" class="form-control">
-                                                                        <option value="Tarot Card">Tarot Card</option>
-                                                                        <option value="Crystal">Crystal</option>
-                                                                    </select>
-                                                                </div>
-                                                                <div class="mb-3">
-                                                                    <label for="title" class="form-label">Title</label>
-                                                                    <input type="text" class="form-control" id="title" name="title" value="<?php echo $row['title'];?>">
-                                                                </div>
-                                                                <div class="mb-3">
-                                                                    <label for="description" class="form-label">Description</label>
-                                                                    <textarea class="form-control" id="description" name="description"><?php echo $row['description']?></textarea>
-                                                                </div>
-                                                                <div class="mb-3">
-                                                                    <label for="stocks" class="form-label">Stocks</label>
-                                                                    <input type="number" class="form-control" id="stocks" name="stocks" value="<?php echo $row['stocks'];?>">
-                                                                </div>
-                                                                <div class="mb-3">
-                                                                    <label for="availability" class="form-label">Availability</label>
-                                                                    <select id="availability" name="availability" class="form-control">
-                                                                        <option value="Available">Available</option>
-                                                                        <option value="Not Available">Not Available</option>
-                                                                    </select>
-                                                                </div>
-                                                                <div class="mb-3">
-                                                                    <label for="price" class="form-label">Price</label>
-                                                                    <input type="number" class="form-control" id="price" name="price" value="<?php echo $row['price'];?>">
-                                                                </div>
-                                                                <div class="mb-3">
-                                                                    <label for="image" class="form-label">Image</label>
-                                                                    <input type="file" class="form-control" id="image" name="image" accept="image/*">
-                                                                </div>
-                                                                <input type="submit" class="btn btn-primary" name="Submit" value="Submit">
-                                                            </form>
+                                                        <div class="mb-3">
+                                                            <label for="title" class="form-label">Title</label>
+                                                            <input type="text" class="form-control" id="title" name="title" value="<?php echo $row['title'];?>">
                                                         </div>
-                                                    </div>
+                                                        <div class="mb-3">
+                                                            <label for="description" class="form-label">Description</label>
+                                                            <textarea class="form-control" id="description" name="description"><?php echo $row['description']?></textarea>
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <label for="stocks" class="form-label">Stocks</label>
+                                                            <input type="number" class="form-control" id="stocks" name="stocks" value="<?php echo $row['stocks'];?>">
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <label for="availability" class="form-label">Availability</label>
+                                                            <select id="availability" name="availability" class="form-control">
+                                                                <option value="Available">Available</option>
+                                                                <option value="Not Available">Not Available</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <label for="price" class="form-label">Price</label>
+                                                            <input type="number" class="form-control" id="price" name="price" value="<?php echo $row['price'];?>">
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <label for="image" class="form-label">Image</label>
+                                                            <input type="file" class="form-control" id="image" name="image" accept="image/*">
+                                                        </div>
+                                                        <input type="submit" class="btn btn-primary" name="Submit" value="Submit">
+                                                    </form>
                                                 </div>
                                             </div>
-                                            <?php endforeach; ?>
+                                        </div>
+                                    </div>
+                                    <?php endforeach; ?>
                                     </tbody>
                              
                                 </table>
@@ -385,7 +400,7 @@ include('includes/conn.php')
                 <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="login.html">Logout</a>
+                    <a class="btn btn-primary" href="/Ecommerce">Logout</a>
                 </div>
             </div>
         </div>

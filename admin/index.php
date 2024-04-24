@@ -159,7 +159,7 @@ session_start();
                                 aria-labelledby="userDropdown">
                                
                              
-                                <a class="dropdown-item" href="processes/logout.php" data-toggle="modal" data-target="#logoutModal">
+                                <a class="dropdown-item" href="/Ecommerce" data-toggle="modal" data-target="#logoutModal">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Logout
                                 </a>
@@ -352,6 +352,8 @@ $totalOrders = isset($result['total_orders']) ? $result['total_orders'] : 0;
                                 </div>
                                 <!-- Card Body -->
                                 <div class="card-body">
+                                <a class="collapse-item" href="orders.php">Orders -></a>
+
                                     <div class="chart-pie pt-4 pb-2">
                                         <canvas id="myPieChart"></canvas>
                                     </div>
@@ -409,7 +411,7 @@ $totalOrders = isset($result['total_orders']) ? $result['total_orders'] : 0;
                 <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="login.html">Logout</a>
+                    <a class="btn btn-primary" href="/Ecommerce">Logout</a>
                 </div>
             </div>
         </div>

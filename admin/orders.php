@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
 
     <meta charset="utf-8">
@@ -162,7 +161,7 @@
                                 aria-labelledby="userDropdown">
                                
                              
-                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                                <a class="dropdown-item" href="/Ecommerce" data-toggle="modal" data-target="#logoutModal">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Logout
                                 </a>
@@ -184,7 +183,7 @@
                         <div class="card-body">
                             <div class="table-responsive">
                                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                <?php
+<?php
 // Include your database connection file
 include_once 'includes/conn.php';
 
@@ -192,16 +191,49 @@ include_once 'includes/conn.php';
 $stmt = $conn->prepare("SELECT * FROM orders");
 $stmt->execute();
 $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+// Query to fetch orders data
+$stmt2 = $conn->prepare("SELECT * FROM order_details");
+$stmt2->execute();
+$order_details = $stmt2->fetchAll(PDO::FETCH_ASSOC);
+
+
+
+if(isset($_GET['id'])) {
+    // Sanitize the input to prevent SQL injection
+    $orderId = $_GET['id'];
+
+    // Prepare the delete statement
+    $stmt = $conn->prepare("DELETE FROM orders WHERE id = :id");
+    $stmt->bindParam(':id', $orderId);
+
+    $stmt2 = $conn->prepare("DELETE FROM order_details WHERE order_id = :id");
+    $stmt2->bindParam(':id', $orderId); // Use $orderId instead of $order_id
+
+
+    // Execute the statement
+    if ($stmt->execute() && $stmt2->execute()) {
+        // Redirect back to the page where orders are displayed, or show a success message
+        echo '<script>window.location.href = "orders.php";</script>';
+        exit();
+    } else {
+        // Handle any errors that may occur during the deletion process
+        echo "Error deleting order.";
+    }
+} else {
+    // If no order ID is provided, show an error message or redirect as appropriate
+    echo "No order ID provided.";
+}
 ?>
 
 <thead>    
     <tr>
-        <th>ID</th>
-        <th>User ID</th>
+        <th>Order ID</th>
+        <th>User</th>
         <th>Delivery Fee</th>
         <th>Total</th>
         <th>Status</th>
-        
+        <th>Order Details</th>
         <th>Manage</th>
     </tr>
 </thead>
@@ -210,19 +242,22 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <tr>
             <td><?php echo $order['id']; ?></td>
             <td><?php $user_id = $order['user_id'];
-                                                    $user_query = "SELECT first_name, last_name FROM user WHERE id = :user_id";
-                                                    $user_stmt = $conn->prepare($user_query);
-                                                    $user_stmt->bindParam(':user_id', $user_id);
-                                                    $user_stmt->execute();
-                                                    $user_row = $user_stmt->fetch(PDO::FETCH_ASSOC);
-                                                    echo $user_row['first_name'] . ' ' . $user_row['last_name']; ?>
-                                                    </td>
+                $user_query = "SELECT first_name, last_name FROM user WHERE id = :user_id";
+                $user_stmt = $conn->prepare($user_query);
+                $user_stmt->bindParam(':user_id', $user_id);
+                $user_stmt->execute();
+                $user_row = $user_stmt->fetch(PDO::FETCH_ASSOC);
+                echo $user_row['first_name'] . ' ' . $user_row['last_name']; ?>
+            </td>
             <td><?php echo $order['delivery_fee']; ?></td>
             <td><?php echo $order['total']; ?></td>
             <td><?php echo $order['status']; ?></td>
             <td>
+                <a href="#" data-bs-toggle="modal" data-bs-target="#viewOrderDetails<?php echo $order['id']; ?>">View</a>
+            </td>
+            <td>
                 <a href="#" data-bs-toggle="modal" data-bs-target="#manageOrderModal<?php echo $order['id']; ?>">Manage</a> |
-                <a href="#">Delete</a>
+                <a href="orders.php?id=<?php echo $order['id']; ?>" onclick="return confirm('Are you sure you want to delete this order?')">Delete</a>
             </td>
         </tr>
 
@@ -236,17 +271,17 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <div class="modal-body">
                         <form action="processes/edit_order.php?id=<?php echo $order['id']?>" method="POST">
                         <input type="text" name="user_id" class="form-control" value="<?php echo $order['user_id']; ?>" readonly>
-    <label for="delivery_fee">Delivery Fee</label>
-    <input type="text" name="delivery_fee" class="form-control" value="<?php echo $order['delivery_fee']; ?>" readonly>
-    <label for="total">Total</label>
-    <input type="text" name="total" class="form-control" value="<?php echo $order['total']; ?>" readonly>
-    <label for="status">Status</label>
-    <select class="form-control" name="status">
-        <option value="PENDING" <?php if ($order['status'] == 'PENDING') echo 'selected'; ?>>Packaging</option>
-        <option value="DELIVERY" <?php if ($order['status'] == 'DELIVERY') echo 'selected'; ?>>In Delivery</option>
-        <option value="RECEIVED" <?php if ($order['status'] == 'RECEIVED') echo 'selected'; ?>>Received</option>
-        <option value="CANCELLED" <?php if ($order['status'] == 'CANCELLED') echo 'selected'; ?>>Cancelled</option>
-    </select>
+                        <label for="delivery_fee">Delivery Fee</label>
+                        <input type="text" name="delivery_fee" class="form-control" value="<?php echo $order['delivery_fee']; ?>" readonly>
+                        <label for="total">Total</label>
+                        <input type="text" name="total" class="form-control" value="<?php echo $order['total']; ?>" readonly>
+                        <label for="status">Status</label>
+                        <select class="form-control" name="status">
+                            <option value="PENDING" <?php if ($order['status'] == 'PENDING') echo 'selected'; ?>>Packaging</option>
+                            <option value="DELIVERY" <?php if ($order['status'] == 'DELIVERY') echo 'selected'; ?>>In Delivery</option>
+                            <option value="RECEIVED" <?php if ($order['status'] == 'RECEIVED') echo 'selected'; ?>>Received</option>
+                            <option value="CANCELLED" <?php if ($order['status'] == 'CANCELLED') echo 'selected'; ?>>Cancelled</option>
+                        </select>
                             <br>
                             <input type="submit" value="Submit" name="Submit" class="btn btn-primary">
                         </form>
@@ -254,6 +289,76 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 </div>
             </div>
         </div>
+
+        <!-- View Order Details Modal -->
+        <div class="modal fade" id="viewOrderDetails<?php echo $order['id']; ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Order Details</h1>
+                    </div>
+                    <div class="modal-body">
+                        <?php
+                        // Fetch order details for the current order
+                        $stmt = $conn->prepare("SELECT * FROM order_details WHERE order_id = :order_id");
+                        $stmt->bindParam(':order_id', $order['id']);
+                        $stmt->execute();
+                        $order_details = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                        // Check if order details exist
+                        if ($order_details) {
+
+                            
+                            // Display order details
+                            foreach ($order_details as $order_detail) {
+                        
+                                $stmt3 = $conn->prepare("SELECT * FROM products WHERE id = :product_id");
+                                $stmt3->bindParam(':product_id', $order_detail['product_id']);
+                                $stmt3->execute();
+                                $product = $stmt3->fetch(PDO::FETCH_ASSOC); // Use fetch instead of fetchAll
+                                
+                                $subTotal = 0;
+
+                                if ($product) {
+                                    $subTotal += $product['price'] * $order_detail['quantity'];
+                                    echo '<div style="display: flex;">';
+                                        echo '<div class="col-lg-8">';
+                                            echo 'Order ID: ' . $order['id'] . '<br>';
+                                            echo 'Quantity: ' . $order_detail['quantity'] . '<br>';
+                                            echo 'Product Type: ' . $product['type'] . '<br>';
+                                            echo 'Product Name: ' . $product['title'] . '<br>';
+                                            echo 'Original Price: ' . ($product['price']) . '<br>';
+                                            echo 'Sub Price: ' . ($product['price'] * $order_detail['quantity']) . '<br>';
+                                            echo '<br>';
+                                        echo '</div>';
+                                        echo '<div>';
+                                            echo '<div><img src="../img/products/' . $product['image'] . '" class="img-fluid one-size"></div>';
+                                            echo '<br>';
+                                        echo '</div>';
+                                    echo '</div>';
+                                } else {
+                                    // Handle case where product is not found
+                                    echo 'Product not found.';
+                                }
+                            }
+
+                            echo '<div style="font-weight: bold; color: #777; border-top: 1px solid #999; padding-top: 5px">Sub Total: ' . $subTotal . '</div>';
+                            echo '<div style="font-weight: bold; color: #777; border-bottom: 1px solid #999; padding-bottom: 5px ">Delivery Fee: ' . $order['total'] . '</div>';
+                            echo '<div style="font-weight: bold; color: #444; padding-top: 10px; font-size: 1.5rem">Total: ' . $order['total'] . '</div>';
+                            echo '<br>';
+
+                        } else {
+                            // No order details found
+                            echo 'No order details found.';
+                        }
+                        ?>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
     <?php endforeach; ?>
 </tbody>
 
@@ -273,7 +378,7 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
   </div>
 </div>
 
-                                    <div class="modal fade" id="manageOrderModalID" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="manageOrderModalID" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
@@ -349,7 +454,7 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="login.html">Logout</a>
+                    <a class="btn btn-primary" href="/Ecommerce">Logout</a>
                 </div>
             </div>
         </div>

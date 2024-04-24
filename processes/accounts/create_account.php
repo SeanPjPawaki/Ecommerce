@@ -25,10 +25,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     {
         mt_srand(1234567890);
         $characters = '0123456789';
-        $characters_length = strlen($characters);
+        $charactersLength = strlen($characters);
         $otp = '';
         for ($i = 0; $i < $length; $i++) {
-            $otp .= $characters[mt_rand(0, $characters_length - 1)];
+            $otp .= $characters[mt_rand(0, $charactersLength - 1)];
         }
         return $otp;
     }

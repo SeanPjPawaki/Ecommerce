@@ -63,65 +63,93 @@ session_start();
             <hr>
 
             <?php
-            if (!isset($_SESSION['USER_ID'])) {
-                // Handle the case when the user is not logged in
-                echo "User is not logged in.";
-                exit;
-            }
 
-            // Include database connection
-            include_once 'includes/conn.php'; // Replace 'conn.php' with your actual database connection file
-            $subtotal = 0;
-            // Fetch cart items for the logged-in user
-            $userId = $_SESSION['USER_ID'];
-            $stmt = $conn->prepare("SELECT * FROM cart WHERE user_id = :user_id");
-            $stmt->bindParam(':user_id', $userId);
-            $stmt->execute();
-            $cartItems = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-            // Output cart items
-            foreach ($cartItems as $cartItem) {
-                // Retrieve product details based on product_id
-                $productId = $cartItem['product_id'];
-                $stmt = $conn->prepare("SELECT * FROM products WHERE id = :product_id");
-                $stmt->bindParam(':product_id', $productId);
+                if (!isset($_SESSION['USER_ID'])) {
+                    // Handle the case when the user is not logged in
+                    echo "User is not logged in.";
+                    exit;
+                }
+                
+                // Include database connection
+                include_once 'includes/conn.php'; // Replace 'conn.php' with your actual database connection file
+                $subtotal = 0;
+                // Fetch cart items for the logged-in user
+                $userId = $_SESSION['USER_ID'];
+                $stmt = $conn->prepare("SELECT * FROM cart WHERE user_id = :user_id");
+                $stmt->bindParam(':user_id', $userId);
                 $stmt->execute();
-                $product = $stmt->fetch(PDO::FETCH_ASSOC);
-
-                // Display cart item with product details
-                echo '<div class="row text-center align-items-center container-cart">';
-                echo '<div class="col-sm-1"><a href="processes/purchases/remove_carter.php?id='.$cartItem['product_id'].'">X</a></div>';
-                echo '<div class="col-sm-2"><img src="img/products/' . $product['image'] . '" class="img-fluid one-size"></div>';
-                echo '<div class="col-sm-2"><h5>' . $product['title'] . '</h5></div>';
-                echo '<div class="col-sm-3"><h5>₱' . $product['price'] . '</h5></div>';
-                echo '<div class="col d-flex">';
-                echo '<button class="btn" id="decrementBtn_' . $cartItem['id'] . '">-</button>';
-                echo '<h5><input type="number" name="quantity[' . $cartItem['id'] . ']" value="' . $cartItem['quantity'] . '" class="quanti_' . $cartItem['id'] . ' quanti"></h5>';
-                echo '<button class="btn" id="incrementBtn_' . $cartItem['id'] . '" data-product-id="' . $productId . '">+</button>';
-                echo '<input type="hidden" name="productId[' . $cartItem['id'] . ']" value="' . $productId . '">';
-                echo '</div>';
-                echo '<div class="col"><h5>₱' . ($product['price'] * $cartItem['quantity']) . '</h5></div>';
-                echo '</div>';
-                echo '<hr>';
-                $subtotal += $product['price'] * $cartItem['quantity'];
-            }
-            ?>
+                $cartItems = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                
+                // Output cart items and calculate subtotal
+                foreach ($cartItems as $cartItem) {
+                    // Retrieve product details based on product_id
+                    $productId = $cartItem['product_id'];
+                    $stmt = $conn->prepare("SELECT * FROM products WHERE id = :product_id");
+                    $stmt->bindParam(':product_id', $productId);
+                    $stmt->execute();
+                    $product = $stmt->fetch(PDO::FETCH_ASSOC);
+                
+                    // Calculate item total
+                    $itemTotal = $product['price'] * $cartItem['quantity'];
+                    $subtotal += $itemTotal;
+                
+                    // Display cart item with product details
+                    echo '<div class="row text-center align-items-center container-cart">';
+                    echo '<div class="col-sm-1"><a href="processes/purchases/remove_carter.php?id='.$cartItem['product_id'].'">X</a></div>';
+                    echo '<div class="col-sm-2"><img src="img/products/' . $product['image'] . '" class="img-fluid one-size"></div>';
+                    echo '<div class="col-sm-2"><h5>' . $product['title'] . '</h5></div>';
+                    echo '<div class="col-sm-3"><h5>₱' . $product['price'] . '</h5></div>';
+                    echo '<div class="col d-flex">';
+                    echo '<button class="btn decrementBtn" data-item-id="' . $cartItem['id'] . '">-</button>';
+                    echo '<h5><input type="number" name="quantity[' . $cartItem['id'] . ']" value="' . $cartItem['quantity'] . '" class="quanti_' . $cartItem['id'] . ' quanti"></h5>';
+                    echo '<button class="btn incrementBtn" data-item-id="' . $cartItem['id'] . '" data-product-id="' . $productId . '">+</button>';
+                    echo '<input type="hidden" name="productId[' . $cartItem['id'] . ']" value="' . $productId . '">';
+                    echo '</div>';
+                    echo '<div class="col itemTotal" data-item-total="' . $itemTotal . '"><h5>₱' . $itemTotal . '</h5></div>';
+                    echo '</div>';
+                    echo '<hr>';
+                }
+                ?>
+        
+       
+       
+       
         </form>
     </div>
 
 
     <script>
-        document.querySelectorAll('[id^="incrementBtn_"], [id^="decrementBtn_"]').forEach(function(btn) {
-            btn.addEventListener('click', function() {
-                var input = this.parentNode.querySelector('input[type="number"]');
-                if (this.id.includes('incrementBtn_') && input.value < 5) {
-                    input.stepUp();
-                } else if (this.id.includes('decrementBtn_') && input.value > 1) {
-                    input.stepDown();
-                }
-            });
+    document.querySelectorAll('.incrementBtn, .decrementBtn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            var itemId = this.getAttribute('data-item-id');
+            var input = document.querySelector('.quanti_' + itemId);
+            var itemTotal = document.querySelector('.itemTotal[data-item-total="' + (parseFloat(input.value) * parseFloat(input.getAttribute('data-price'))) + '"]');
+            
+            if (this.classList.contains('incrementBtn') && input.value < 5) {
+                input.stepUp();
+            } else if (this.classList.contains('decrementBtn') && input.value > 1) {
+                input.stepDown();
+            }
+
+            // Calculate the new item total
+            var newTotal = parseFloat(input.value) * parseFloat(input.getAttribute('data-price'));
+            
+            // Update item total display
+            itemTotal.setAttribute('data-item-total', newTotal);
+            itemTotal.innerHTML = '₱' + newTotal.toFixed(2);
+
+            // Update subtotal
+            var subtotalValue = parseFloat(document.querySelector('.first-ic.subtotal').textContent.replace(/[^\d.-]/g, ''));
+            var updatedSubtotal = subtotalValue + (newTotal - parseFloat(itemTotal.getAttribute('data-item-total')));
+            document.querySelector('.first-ic.subtotal').innerHTML = '₱' + updatedSubtotal.toFixed(2);
+
+            // Update total including delivery fee
+            var deliveryFee = parseFloat(document.querySelector('.first-ic.delivery-fee').textContent.replace(/[^\d.-]/g, ''));
+            var totalValue = updatedSubtotal + deliveryFee;
+            document.querySelector('.first-ic.total').innerHTML = '₱' + totalValue.toFixed(2);
         });
-    </script>
+    });
+</script>
 
 
 
@@ -142,7 +170,7 @@ session_start();
     $stmt2->bindParam(':barangay', $barangay, PDO::PARAM_STR);
     $stmt2->execute();
     $result2 = $stmt2->fetch(PDO::FETCH_ASSOC);
-    $delivery_fee = $result2['delivery_fee'];
+    $delivery_fee = isset($result2['delivery_fee']) ? intval($result2['delivery_fee']) : 0;
     ?>
 
 <?php
@@ -163,32 +191,31 @@ if ($cart_count > 0) {
     $cartItems = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     // Calculate subtotal
-    $subtotal = 0;
-    foreach ($cartItems as $cartItem) {
-        $subtotal += $product['price'] * $cartItem['quantity'];
-    }
+    // foreach ($cartItems as $cartItem) {
+    //     $subtotal += $product['price'] * $cartItem['quantity'];
+    // }
 
     // Delivery fee
     // Total
     $total = $subtotal + $delivery_fee;
 ?>
-    <div class="container container-cart">
-        <h1 class="bold">Cart totals</h1>
-        <div class="row">
-            <div class="col-sm-3">
-                <h5 class="first-ic">Subtotal</h5>
-                <h5 class="first-ic">Delivery Fee</h5>
-                <h5 class="first-ic">Total</h5>
-            </div>
-            <div class="col-sm-3">
-                <h5 class="first-ic">₱<?php echo number_format($subtotal, 2, '.', ',') ?></h5>
-                <h5 class="first-ic">₱<?php echo number_format($delivery_fee, 2, '.', ',') ?></h5>
-                <h5 class="first-ic">₱<?php echo number_format($total, 2, '.', ',') ?></h5>
-            </div>
+<div class="container container-cart">
+    <h1 class="bold">Cart totals <?php echo number_format($total, 2, '.', ',') ?></h1>
+    <div class="row">
+        <div class="col-sm-3">
+            <h5 class="first-ic subtotal">Subtotal</h5>
+            <h5 class="first-ic delivery-fee">Delivery Fee</h5>
+            <h5 class="first-ic total">Total</h5>
         </div>
-        <br>
-        <a href="checkout.php?total=<?php echo $total?>&delivery_fee=<?php echo $delivery_fee?>" class="read checkout-btn"> PROCEED TO CHECKOUT </a>
+        <div class="col-sm-3">
+            <h5 class="first-ic subtotal">₱<?php echo number_format($subtotal, 2, '.', ',') ?></h5>
+            <h5 class="first-ic delivery-fee">₱<?php echo number_format($delivery_fee, 2, '.', ',') ?></h5>
+            <h5 class="first-ic total">₱<?php echo number_format($total, 2, '.', ',') ?></h5>
+        </div>
     </div>
+    <br>
+    <a href="checkout.php?total=<?php echo $total?>&delivery_fee=<?php echo $delivery_fee?>" class="read checkout-btn"> PROCEED TO CHECKOUT </a>
+</div>
 <?php
 }else{
     echo "<h1 style='text-align: center' class='svrbs'> Cart is empty! </h1>";

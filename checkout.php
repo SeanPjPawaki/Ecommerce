@@ -47,13 +47,13 @@ $deliveryInfo = $stmtDelivery->fetch(PDO::FETCH_ASSOC);
     <div class="container-fluid container-billing form-severabs">
         <h5>Billing Details</h5>
         <label for="country_billing" class="label-severabs">Country: (non-editable)</label>
-        <input disabled type="text" id="country_billing" name="country_billing" class="form-control input-severabs" value=<?php echo $billingInfo['country']?> readonly>
+        <input type="text" id="country_billing" name="country_billing" class="form-control input-severabs" value=<?php echo $billingInfo['country']?> readonly>
 
         <label for="province_billing" class="label-severabs">Province: (non-editable)</label>
-        <input disabled type="text" id="province_billing" name="province_billing" class="form-control input-severabs" value=<?php echo $billingInfo['province']?> readonly>
+        <input type="text" id="province_billing" name="province_billing" class="form-control input-severabs" value=<?php echo $billingInfo['province']?> readonly>
 
         <label for="city_billing" class="label-severabs">City: (non-editable)</label>
-        <input disabled type="text" id="city_billing" name="city_billing" class="form-control input-severabs" value=<?php echo $billingInfo['city']?> readonly>
+        <input type="text" id="city_billing" name="city_billing" class="form-control input-severabs" value=<?php echo $billingInfo['city']?> readonly>
 
         <label for="barangay_billing" class="label-severabs">Barangay:</label>
         <?php
@@ -94,13 +94,13 @@ $deliveryInfo = $stmtDelivery->fetch(PDO::FETCH_ASSOC);
     <div class="container-fluid container-delivery form-severabs">
         <h5>Delivery Details</h5>
         <label for="country_delivery" class="label-severabs">Country: (non-editable)</label>
-        <input disabled type="text" id="country_delivery" name="country_delivery" class="form-control input-severabs" value=<?php echo $deliveryInfo['country']?> readonly>
+        <input type="text" id="country_delivery" name="country_delivery" class="form-control input-severabs" value=<?php echo $deliveryInfo['country']?> readonly>
 
         <label for="province_delivery" class="label-severabs">Province: (non-editable)</label>
-        <input disabled type="text" id="province_delivery" name="province_delivery" class="form-control input-severabs" value=<?php echo $deliveryInfo['province']?> readonly>
+        <input type="text" id="province_delivery" name="province_delivery" class="form-control input-severabs" value=<?php echo $deliveryInfo['province']?> readonly>
 
         <label for="city_delivery" class="label-severabs">City: (non-editable)</label>
-        <input disabled type="text" id="city_delivery" name="city_delivery" class="form-control input-severabs" value=<?php echo $deliveryInfo['city']?> readonly>
+        <input type="text" id="city_delivery" name="city_delivery" class="form-control input-severabs" value=<?php echo $deliveryInfo['city']?> readonly>
 
         <label for="barangay_delivery" class="label-severabs">Barangay:</label>
         <?php
@@ -219,7 +219,7 @@ echo '</div>';
 ?>
 
 <div class="container-payment">
-  <h5> <b>NOTE:</b>Your orders will all be paid through or via Cash on Delivery (COD).</h5>
+  <h5> <b>NOTE:</b>Your orders will all be paid via Cash on Delivery (COD).</h5>
 </div>
 
 <br>

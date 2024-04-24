@@ -27,7 +27,36 @@ include('includes/conn.php')
 
 </head>
 
+
+
+
 <body id="page-top">
+
+
+<?php
+
+
+if(isset($_GET['id'])) {
+    // Sanitize the input to prevent SQL injection
+    $orderDetailsId = $_GET['id'];
+
+    $stmt = $conn->prepare("DELETE FROM order_details WHERE id = :id");
+    $stmt->bindParam(':id', $orderDetailsId); 
+
+
+    // Execute the statement
+    if ($stmt->execute()) {
+        // Redirect back to the page where orders are displayed, or show a success message
+        echo '<script>window.location.href = "orders_details.php";</script>';
+        exit();
+    } else {
+        // Handle any errors that may occur during the deletion process
+        echo "Error deleting order.";
+    }
+} 
+?>
+
+
 
     <!-- Page Wrapper -->
     <div id="wrapper">
@@ -153,8 +182,7 @@ include('includes/conn.php')
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
 
-
-                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                            <a class="dropdown-item" href="/Ecommerce" data-toggle="modal" data-target="#logoutModal">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Logout
                                 </a>
@@ -218,7 +246,59 @@ include('includes/conn.php')
                                                     $user_row = $user_stmt->fetch(PDO::FETCH_ASSOC);
                                                     echo $user_row['title']; ?>
                                                 <td><?php echo $row['quantity']; ?></td>
-                                                <td> <a href="">Manage</a> | <a href="">Delete</a> </td>
+                                                <td>                 
+                                                    <a href="#" data-bs-toggle="modal" data-bs-target="#viewOrderDetails<?php echo $row['id']; ?>">View | </a>
+                                                    <a href="orders_details.php?id=<?php echo $row['id']; ?>" onclick="return confirm('Are you sure you want to delete this order?')">Delete</a>
+                                                </td>
+
+
+                                                <!-- View Order Details Modal -->
+                                                <div class="modal fade" id="viewOrderDetails<?php echo $row['id']; ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h1 class="modal-title fs-5" id="exampleModalLabel">Order Details</h1>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <?php
+                                                                // Fetch order details for the current order
+                                                         
+
+                                                                    
+                                                                                                            
+                                                                        $stmt3 = $conn->prepare("SELECT * FROM products WHERE id = :product_id");
+                                                                        $stmt3->bindParam(':product_id', $row['product_id']);
+                                                                        $stmt3->execute();
+                                                                        $product = $stmt3->fetch(PDO::FETCH_ASSOC); // Use fetch instead of fetchAll
+                                                                        
+
+                                                                        if ($product) {
+                                                                            echo '<div style="display: flex;">';
+                                                                                echo '<div class="col-lg-8">';
+                                                                                    echo 'Quantity: ' . $row['quantity'] . '<br>';
+                                                                                    echo 'Product Type: ' . $product['type'] . '<br>';
+                                                                                    echo 'Product Name: ' . $product['title'] . '<br>';
+                                                                                    echo 'Original Price: ' . ($product['price']) . '<br>';
+                                                                                    echo 'Sub Price: ' . ($product['price'] * $row['quantity']) . '<br>';
+                                                                                    echo '<br>';
+                                                                                echo '</div>';
+                                                                                echo '<div>';
+                                                                                    echo '<div><img src="../img/products/' . $product['image'] . '" class="img-fluid one-size"></div>';
+                                                                                    echo '<br>';
+                                                                                echo '</div>';
+                                                                            echo '</div>';
+                                                                        } else {
+                                                                            // Handle case where product is not found
+                                                                            echo 'Product not found.';
+                                                                        }
+                                                                    
+
+                                                                
+                                                                ?>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </tr>
                                         <?php endforeach; ?>
                                     </tbody>
@@ -255,7 +335,8 @@ include('includes/conn.php')
     </a>
 
     <!-- Logout Modal-->
-    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -267,7 +348,7 @@ include('includes/conn.php')
                 <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="login.html">Logout</a>
+                    <a class="btn btn-primary" href="/Ecommerce">Logout</a>
                 </div>
             </div>
         </div>

@@ -42,87 +42,105 @@ include('includes/conn.php') ?>
         </div>
     </div>
 
+    <!-- Search Form -->
+    <div class="container-fluid">
+        <form action="" method="GET" class="mb-3 mt-5 px-4">
+            <div class="input-group">
+                <input type="text" class="form-control py-3" placeholder="Search for products..." name="search">
+                <button class="btn btn-outline-secondary" type="submit">Search</button>
+            </div>
+        </form>
+    </div>
 
     <div class="container-fluid product-info-container text-center">
-
-    <div class="container-fluid product-info-container text-center">
-
-<?php
-$stmt = $conn->prepare("SELECT * FROM products WHERE availability = 'Available'");
-$stmt->execute();
-
-// Fetch all rows as associative arrays
-$products = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-// Counter for tracking the number of products
-$productCounter = 0;
-
-// Generate HTML for each product
-foreach ($products as $product) {
-    // Check if product counter is divisible by 4
-    if ($productCounter % 4 == 0) {
-        // If divisible by 4, start a new row
-        if ($productCounter != 0) {
-            echo '</div>'; // Close previous row
+        <!-- Product Display -->
+        <?php
+        // Check if there is a search query
+        if (isset($_GET['search'])) {
+            $search = $_GET['search'];
+            // Query to search for products
+            $stmt = $conn->prepare("SELECT * FROM products WHERE availability = 'Available' AND (title LIKE :search OR description LIKE :search)");
+            // Bind search parameter
+            $stmt->bindValue(':search', '%' . $search . '%');
+        } else {
+            // Default query to fetch all available products
+            $stmt = $conn->prepare("SELECT * FROM products WHERE availability = 'Available'");
         }
-        echo '<div class="row product-row">'; // Start new row
+        $stmt->execute();
+
+        // Fetch all rows as associative arrays
+        $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        // Counter for tracking the number of products
+        $productCounter = 0;
+
+        // Generate HTML for each product
+        foreach ($products as $product) {
+            // Check if product counter is divisible by 4
+            if ($productCounter % 4 == 0) {
+                // If divisible by 4, start a new row
+                if ($productCounter != 0) {
+                    echo '</div>'; // Close previous row
+                }
+                echo '<div class="row product-row">'; // Start new row
+            }
+
+            echo '<div class="col prod-col">';
+            echo '<div class="card text-center">';
+            echo '<img src="img/products/' . $product['image'] . '" class="card-img-top prods" alt="Product Image">';
+            echo '<div class="card-body">';
+            echo '<h5 class="card-title prod-title">' . $product['title'] . '</h5>';
+            $description = strlen($product['description']) > 50 ? substr($product['description'], 0, 50) . '...' : $product['description'];
+            echo '<p class="card-text prod-desc">' . $description . '</p>';
+            echo '<p class="card-text"> ₱' . $product['price'] . '</p>';
+            // Pass product details to the modal
+            echo '<button type="button" class="btn btn-srvbs" data-bs-toggle="modal" data-bs-target="#viewInfo' . $product['id'] . '">View Info</button>';
+            echo '</div></div></div>';
+
+            // Increment product counter
+            $productCounter++;
+        }
+
+        // Close the last row if it's not already closed
+        if ($productCounter % 4 != 0) {
+            echo '</div>'; // Close the last row
+        }
+        ?>
+    </div>
+
+    <!-- Modals -->
+    <?php
+    // Generate modals for each product
+    foreach ($products as $product) {
+        echo '<div class="modal fade" id="viewInfo' . $product['id'] . '" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">';
+        echo '<div class="modal-dialog">';
+        echo '<div class="modal-content">';
+        echo '<div class="modal-header">';
+        echo '<h5 class="modal-title bold fs-5">' . $product['title'] . '</h5>';
+        echo '<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>';
+        echo '</div>';
+        echo '<div class="modal-body">';
+        echo '<img src="img/products/' . $product['image'] . '" class="img-fluid prodder"';
+        echo '<hr>';
+        echo '<br>';
+        echo '<p>' . $product['description'] . '</p>';
+        echo '<p>₱' . $product['price'] . '</p>';
+        echo '<br>';
+        echo '</div>';
+        echo '<div class="modal-footer">';
+        echo '<button type="button" class="btn btn-primary" onclick="addToCart(' . $product['id'] . ')">Add to Cart</button>';
+        echo '</div>';
+        echo '</div>';
+        echo '</div>';
+        echo '</div>';
     }
-   
-    echo '<div class="col prod-col">';
-    
-    echo '<div class="card text-center">';
-    echo '<img src="img/products/' . $product['image'] . '" class="card-img-top prods" alt="Product Image">';
-    echo '<div class="card-body">';
-    echo '<h5 class="card-title prod-title">' . $product['title'] . '</h5>';
-    $description = strlen($product['description']) > 50 ? substr($product['description'], 0, 50) . '...' : $product['description'];
-    echo '<p class="card-text prod-desc">' . $description . '</p>';
-    echo '<p class="card-text"> ₱' . $product['price'] . '</p>';
-    // Pass product details to the modal
-    echo '<button type="button" class="btn btn-srvbs" data-bs-toggle="modal" data-bs-target="#viewInfo' . $product['id'] . '">View Info</button>';
-    echo '</div></div></div>';
-
-    // Increment product counter
-    $productCounter++;
-}
-
-// Close the last row if it's not already closed
-if ($productCounter % 4 != 0) {
-    echo '</div>'; // Close the last row
-}
-?>
-</div>
-
-<?php
-// Generate modals for each product
-foreach ($products as $product) {
-    echo '<div class="modal fade" id="viewInfo' . $product['id'] . '" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">';
-    echo '<div class="modal-dialog">';
-    echo '<div class="modal-content">';
-    echo '<div class="modal-header">';
-    echo '<h5 class="modal-title bold fs-5">' . $product['title'] . '</h5>';
-    echo '<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>';
-    echo '</div>';
-    echo '<div class="modal-body">';
-    echo '<img src="img/products/' . $product['image'] . '" class="img-fluid prodder"';
-
-    echo '<hr>';
-    echo '<br>';
-    echo '<p>' . $product['description'] . '</p>';
-    echo '<p>₱' . $product['price'] . '</p>';
-    echo '<br>';
-    echo '</div>';
-    echo '<div class="modal-footer">';
-    echo '<button type="button" class="btn btn-primary" onclick="addToCart(' . $product['id'] . ')">Add to Cart</button>';
-    echo '</div>';
-    echo '</div>';
-    echo '</div>';
-    echo '</div>';
-}
-?>
-
-</div>
-
+    ?>
 </body>
+
+
+
+
+
 <?php include('includes/footer.php') ?>
 
 
